@@ -120,8 +120,12 @@ class Card {
             return;
         }
 
-        // Don't set isDragging = true here - wait for actual movement
-        // This prevents updateDragging() from running on quick taps (iOS fix)
+        // For mouse: start dragging immediately (desktop behavior)
+        // For touch: wait for actual movement (iOS fix - prevents updateDragging on quick taps)
+        if (e.pointerType === 'mouse') {
+            this.isDragging = true;
+            this.element.classList.add('dragging');
+        }
 
         // Prepare for potential drag (calculate offset in case user starts dragging)
         const rect = this.stack.container.getBoundingClientRect();
