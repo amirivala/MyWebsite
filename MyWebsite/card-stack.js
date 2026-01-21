@@ -51,6 +51,7 @@ class Card {
         // Click detection
         this.pointerDownPos = { x: 0, y: 0 };
         this.hasDragged = false;
+        this.isPointerDown = false;
 
         // Velocity tracking for rotation
         this.lastX = 0;
@@ -111,6 +112,7 @@ class Card {
         // Track for click detection
         this.pointerDownPos = { x: e.clientX, y: e.clientY };
         this.hasDragged = false;
+        this.isPointerDown = true;
 
         // Store original z-index before any changes (for tap-to-front logic)
         this.zIndexOnPointerDown = this.zIndex;
@@ -143,6 +145,9 @@ class Card {
     }
 
     onPointerMove(e) {
+        // Ignore if pointer isn't pressed (prevents hover from triggering drag)
+        if (!this.isPointerDown) return;
+
         // Check if we've moved enough to be considered a drag
         const dist = distance(this.pointerDownPos.x, this.pointerDownPos.y, e.clientX, e.clientY);
         if (dist > 10) {
@@ -180,6 +185,8 @@ class Card {
     }
 
     onPointerUp(e) {
+        this.isPointerDown = false;
+
         // Check for click (not drag)
         if (!this.hasDragged && this.stack.viewMode !== 'expanded') {
             this.isDragging = false;
