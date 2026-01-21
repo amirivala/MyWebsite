@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Card Stack</title>
+    <link rel="stylesheet" href="card-stack.css">
+</head>
+<body>
+    <nav class="top-nav">
+        <button class="nav-btn" id="gridBtn">Grid</button>
+        <button class="nav-btn" id="aboutBtn">About</button>
+    </nav>
+
+    <div class="card-stack-container" id="cardStack"></div>
+
+    <div class="card-info" id="cardInfo">
+        <div class="card-info-inner" id="cardInfoInner">
+            <div class="card-info-title" id="cardTitle"></div>
+            <div class="card-info-description" id="cardDescription"></div>
+        </div>
+    </div>
+
+    <div class="drag-tip" id="dragTip">
+        <span>Drag cards to explore</span>
+    </div>
+
+    <div class="detail-page" id="detailPage">
+        <button class="back-btn" id="backBtn">← Back</button>
+        <div class="detail-content" id="detailContent"></div>
+    </div>
+
+    <!-- About Modal -->
+    <div class="modal" id="aboutModal">
+        <div class="modal-overlay"></div>
+        <div class="modal-card">
+            <div class="modal-handle"></div>
+            <button class="modal-back" id="aboutClose">← Back</button>
+            <div class="modal-content">
+                <img src="profile.png" alt="Amir Alavi" class="profile-image">
+                <h1 class="modal-title">Amir Alavi</h1>
+                <p class="modal-text">
+                    I'm a multidisciplinary product designer and developer who builds interactive systems end-to-end—from concept and prototyping to design systems and real-time implementation. My work spans AR/VR, creator tools, and games, with a focus on interaction design, motion, and performance-minded UI that ships on constrained devices. I'm at my best when design and engineering move together: defining the experience, building the underlying systems, and iterating until it feels effortless, responsive, and alive.
+                </p>
+                <div class="contact-social">
+                    <a href="mailto:amirivala@me.com" class="social-icon" aria-label="Email">
+                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M1.5 8.67v8.58a3 3 0 003 3h15a3 3 0 003-3V8.67l-8.928 5.493a3 3 0 01-3.144 0L1.5 8.67z"/><path d="M22.5 6.908V6.75a3 3 0 00-3-3h-15a3 3 0 00-3 3v.158l9.714 5.978a1.5 1.5 0 001.572 0L22.5 6.908z"/></svg>
+                    </a>
+                    <a href="https://x.com/amirivala" target="_blank" class="social-icon" aria-label="X">
+                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                    </a>
+                    <a href="https://bsky.app/profile/amiralavi.bsky.social" target="_blank" class="social-icon" aria-label="Bluesky">
+                        <svg viewBox="0 0 568 501" fill="currentColor"><path d="M123.121 33.664C188.241 82.553 258.281 181.68 284 234.873c25.719-53.192 95.759-152.32 160.879-201.21C491.866-1.611 568-28.906 568 57.947c0 17.346-9.945 145.713-15.778 166.555-20.275 72.453-94.155 90.933-159.875 79.748C507.222 323.8 536.444 388.56 473.333 453.32c-119.86 122.992-172.272-30.859-185.702-70.281-2.462-7.227-3.614-10.608-3.631-7.733-.017-2.875-1.169.506-3.631 7.733-13.43 39.422-65.842 193.273-185.702 70.281-63.111-64.76-33.89-129.52 80.986-149.071-65.72 11.185-139.6-7.295-159.875-79.748C9.945 203.659 0 75.291 0 57.946 0-28.906 76.135-1.612 123.121 33.664Z"/></svg>
+                    </a>
+                    <a href="https://www.linkedin.com/in/amir-alavi-4457148a/" target="_blank" class="social-icon" aria-label="LinkedIn">
+                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+                    </a>
+                    <a href="https://www.instagram.com/amerros/" target="_blank" class="social-icon" aria-label="Instagram">
+                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="card-stack.js"></script>
+    <script>
+        const cardStack = new CardStack(document.getElementById('cardStack'), {
+            maxCards: 9,
+            spawnInterval: 100,
+            cardData: [
+                { title: 'TikTok / ByteDance — Effect House', description: 'System design for creator tools + interaction foundations', video: 'TikTok.mp4', color: '#1a1a1a', fullDescription: `[IMG:tiktok-home.png]
+
+At TikTok, I worked on Effect House, TikTok's creator platform, focused on building interaction foundations that make effects easier to create, reuse, and scale. The work centered on system design—defining reusable patterns, component conventions, and workflows that help creators and internal teams ship interactive experiences faster while keeping quality consistent.
+
+[IMG:tiktok-feedback.png]
+
+A key part of my role was prototyping and refining interaction building blocks and translating them into implementation-ready patterns with engineering. I partnered closely across design and engineering to ensure what we built could map cleanly into the product's tooling and be adopted broadly—so teams weren't reinventing the same behaviors across projects.
+
+[IMG:tiktok-youtube.png]
+
+Over time, this work contributed to measurable adoption and productivity gains—expanding reusable building blocks from a small set to 100+, increasing template-driven publishing by roughly ~6×, and growing the number of creators using these workflows by roughly ~4×. We also strengthened the education and enablement layer around these systems, growing learning content from ~10 to 60+ resources and supporting launches through 30+ live sessions and tutorial content that improved completion/submission rates by roughly ~5–10% compared to similar releases.` },
+                { title: 'Spectacles', description: 'Prototyping hand interactions for AR glasses', video: 'Spectacles.mp4', color: '#1a1a1a', fullDescription: `For Spectacles, I led early interaction prototyping focused on how hand-based input should work on future glasses. The goal was to explore multiple directions quickly, test what felt natural in real use, and identify patterns that could translate into a shippable interaction system for the device.
+
+[IMG:spectacles-selector.gif]
+
+I built and iterated on a range of prototypes—different hand interaction concepts, UI behaviors, and in-world feedback—covering both what the user does and what they see. That included designing the visual language for hands and interaction cues in AR (how selections appear, how states communicate, how feedback feels in space), and creating small, focused experiences to evaluate clarity, comfort, and learnability.
+
+[GRID:spectacles-hand1.gif,spectacles-hand2.gif,spectacles-hand3.gif,spectacles-appbar.gif]
+
+I worked closely with the engineering team throughout the process to keep prototypes grounded in real device constraints. Together we turned exploratory concepts into implementation-ready patterns, ensuring the strongest interactions could map cleanly into the Spectacles input framework and be shipped as part of the Spectacles OS prototype stack.` },
+                { title: 'World War Expedite', description: 'A custom-physics 2D platformer prototype', video: 'WorldWar Expedite.mp4', color: '#1a1a1a', fullDescription: `[IMG:wwe-cover.jpg]
+
+World War Expedite is a passion-project prototype I started in 2017—a 2D platformer built as a technical and gameplay experiment.
+
+[VIDEO:wwe-trailer.mp4]
+
+The core of the project was building a custom physics system from scratch. I wanted tight, responsive movement that felt good under the hands—so I implemented my own collision detection, gravity, and character controller rather than relying on an off-the-shelf engine.
+
+[GRID:wwe-physics.gif,wwe-grab.gif]
+
+The result is a prototype that explores how physics-based movement can make a platformer feel more dynamic and expressive.
+
+[VIDEO:wwe-scene.mp4]` },
+                { title: 'Snapchat — Templates & Creator Tools', description: 'Scaling a template ecosystem with a shared component system', video: 'Snapchat Templates.mp4', color: '#1a1a1a', fullDescription: `[GRID:snap-component1.png,snap-component2.png,snap-component3.png,snap-component4.jpg]
+
+At Snapchat, I worked on a small cross-functional team building and scaling the Lens Studio template ecosystem—helping make AR creation faster, more approachable, and more consistent for creators. We started small and moved quickly, shaping both the creator-facing experience (what people build with) and the internal foundations (how we build and ship templates efficiently).
+
+[VIDEO:snap-characters1.mp4]
+
+My core responsibility was leading design across the template program and the tooling that supports it. I designed key editor workflows and Studio components, then partnered closely with engineering and other designers to translate those patterns into a shared component system used across design and implementation. The goal was a single source of truth: consistent UI behavior, repeatable interaction patterns, and reusable building blocks that let us iterate without re-designing or re-building the same pieces each time. This system became the backbone for how we produced templates—improving speed, reducing rework, and keeping the quality bar high as the library expanded.
+
+[VIDEO:snap-characters2.mp4]
+
+On the content side, I designed and shipped 30+ Lens Studio templates, owning the visual language and interaction patterns that made them easy to understand, customize, and remix. Each template needed to feel polished out of the box, but also structured enough for creators to learn the underlying technique and quickly make it their own—so I focused on clarity, guidance, and a "ready-to-publish" level of finish.
+
+[VIDEO:snap-characters3.mp4]
+
+Beyond product work, I also led major brand and event design efforts for the Lens creator community. I created the full visual identity for Lens Fest 1 and Lens Fest 2, and designed additional launch and event assets across the ecosystem—ensuring the creative direction felt cohesive across marketing surfaces, in-product moments, and community-facing experiences.
+
+[GRID:snap-lensfest-logo.png,snap-lensfest-badge.png,snap-lensfest-tshirt.png,snap-lensfest-ar.gif]
+
+Overall, this work combined product design, system thinking, and hands-on craft: building reusable components and workflows, shipping a large library of creator templates, and shaping the visual identity of key creator events—while collaborating tightly with engineering to keep everything grounded, scalable, and shippable.` },
+                { title: 'Super Duper Punch', description: 'A retro arcade boxing game with a top-down twist', video: 'Super Duper Punch.mp4', color: '#1a1a1a', fullDescription: `[IMG:sdp-cover.png]
+
+Super Duper Punch is a vintage arcade-style fighting game inspired by classic console boxing—then remixed into a top-down arena brawler with power-ups and a "push your opponent into the goal" objective. It's designed to be simple to learn, fast to play, and surprisingly deep once you start mastering spacing, blocks, and knockback.
+
+[GRID:sdp-1.jpg,sdp-2.jpg,sdp-3.jpg,sdp-4.jpg]
+
+Built around our love of early Atari/Commodore-era simplicity, the game leans into bright, blocky visuals and intuitive controls—retro energy, but with a modern, playful "pixel-psychedelic" style.
+
+[IMG:sdp-5.jpg]
+
+I founded and built Super Duper Punch end-to-end, owning the product and the craft across gameplay systems, UX, and UI implementation. The game reached #12 Top Free Apps on the App Store and was featured multiple times by Apple, which validated the core loop and the clarity of the experience.
+
+The world is built around a character-driven arc: Queen Clara fights through a roster of opponents to reclaim her crown—each opponent representing a piece of her "evil ego," culminating in a final confrontation.` },
+                { title: 'Procedural Character — Lumi', description: 'A real-time evolving companion for Loop OS', video: 'Procedural Character Lumi.mp4', color: '#1a1a1a', fullDescription: `[IMG:lumi-figma.png]
+
+Lumi is a procedural character that lives inside Loop OS—a companion that reacts to what you do, reflects the state of the system, and evolves over time. From day one, the goal was to make Lumi feel expressive and "alive" without relying on heavy rigs, large texture sets, or traditional animation pipelines. Instead, Lumi is built around shader-driven rendering and procedural motion so it can run continuously in the background while the OS stays responsive.
+
+[VIDEO:lumi-character.mp4]
+
+I designed Lumi as both a character and a product system. On the character side, I defined the evolution model (how Lumi progresses through distinct stages), the visual rules (how features like eyes and silhouette vary), and the behavior language (how it responds emotionally to user actions). On the product side, I designed how Lumi integrates into the OS: where it shows up, when it reacts, what feedback is helpful vs distracting, and how its presence supports the device's overall "living world" feeling rather than becoming a separate toy.
+
+[VIDEO:lumi-1.mp4]
+
+A major part of the work was making the system shippable on constrained hardware. Lumi needed to update fast and stay stable while other OS experiences—like inventory browsing and web-view apps—run at the same time. I worked on the rendering and animation approach to keep it lightweight (procedural motion instead of baked clips, param-driven expressions instead of expensive assets), and I implemented tuning controls so we could iterate quickly on feel, readability, and personality without rewriting the pipeline.
+
+[VIDEO:lumi-2.mp4]
+
+Lumi's animation is fully procedural. Instead of fixed keyframes, motion is generated through a set of parameters and behaviors—idle breathing, attention shifts, reactions, and state transitions—so Lumi can respond in the moment and still remain consistent across evolution stages. The end result is a character that scales: it can change, react, and grow with the user while staying performant, maintainable, and deeply integrated with the Loop OS experience.
+
+[VIDEO:lumi-3.mp4]` },
+                { title: 'BlobDraw', description: 'An SDF-based drawing tool for iPad Pro — coming 2026', video: 'Blob Draw.mp4', color: '#1a1a1a', fullDescription: `[IMG:blobdraw-screenshot.png]
+
+BlobDraw is a passion project I'm building in my free time: a drawing app for iPad Pro that combines the expressiveness of Apple Pencil Pro with a shader-based SDF (signed distance field) approach to making art. Instead of drawing only with pixels or vector paths, BlobDraw lets you draw with shapes—placing, blending, and sculpting forms using SDF operations like union and subtract. The result feels more like sculpting with ink: you can build clean silhouettes quickly, carve negative space, and iterate without losing the playful "hands-on" feel of sketching.
+
+[VIDEO:blobdraw-1.mp4]
+
+I'm designing BlobDraw end-to-end as both a product and a technical system. On the product side, I'm defining the interaction model for pencil-first creation—how tools feel under the hand, how shape layering works, how users switch modes fluidly, and how the UI stays minimal so the canvas stays central. On the technology side, I'm building the SDF rendering pipeline and the shape-composition logic so the experience stays responsive and precise on iPad Pro, even with complex layered shapes and real-time edits.
+
+BlobDraw is currently in development and planned for a 2026 release. It's a personal exploration of what "drawing" can feel like when you treat shapes as building blocks—combining the immediacy of a sketchbook with the flexibility of procedural graphics.` },
+                { title: 'Loop Operating System', description: 'A lightweight, playful operating system for a 3DoF handheld device', video: 'Loop OS.mp4', color: '#1a1a1a', fullDescription: `[IMG:loopos-screenshot.png]
+
+Loop OS is an end-to-end OS experience designed for a dedicated handheld device—built to feel magical and tactile while still running smoothly on constrained hardware. We started from Figma explorations and design system work, then translated those concepts into a real product that could ship on a slower processor and a limited hardware budget without losing the personality of the interface. The result is a cohesive "living OS" where interaction, motion, and graphics work together to make the device feel approachable and fun.
+
+[VIDEO:loopos-1.mp4]
+
+My work on Loop OS spans product design, system design, and implementation. I helped define the interaction model and component system, turning early design ideas into reusable UI patterns that could scale across the OS while staying consistent. A major focus was performance-aware design: finding ways to keep the interface expressive—through motion, transitions, and visual feedback—while staying fast and responsive on the device.
+
+[VIDEO:loopos-2.mp4]
+
+One of the core challenges was the inventory system. The device can recognize and manage 6,000+ items, which required designing an experience that stays fast, browsable, and understandable at scale. I worked on the inventory's information architecture and interaction patterns—how items are captured, organized, and resurfaced—so it feels effortless instead of overwhelming, even with huge collections.
+
+[VIDEO:loopos-3.mp4]
+
+Another signature part of Loop OS is the character layer: a procedural character that reacts to what you do across the OS. This makes the interface feel alive—your actions have emotional feedback, and the OS has a sense of presence rather than being a set of static screens.
+
+[VIDEO:loopos-4.mp4]
+
+Loop OS also supports a hybrid app model powered by web views. Many experiences inside the OS load as embedded web content, so the platform can ship quickly and iterate often while still feeling native. To support creators and internal teams, we built a companion tool called Studio, where people can author content and push it directly to Loop OS to test on the physical device—tightening the build/test loop and enabling rapid experimentation.
+
+[VIDEO:loopos-5.mp4]` },
+                { title: 'Hey Taxi!', description: 'Rhythm x Side-Scroller driving game — coming 2026', video: 'HeyTaxi.mp4', color: '#1a1a1a', fullDescription: `[IMG:heytaxi-logo.png]
+
+Hey Taxi is a minimalist rhythm driving game where every lane change is timed to the music. You follow the route, watch the beat cues fill in, then switch lanes at the exact moment to stay on the correct path, avoid crashes, and keep your streak alive. The visual style is intentionally simple and high-contrast—built to feel like a modern "Game & Watch" so the timing, readability, and feedback always come first.
+
+[VIDEO:heytaxi-cars.mp4]
+
+I'm building Hey Taxi end-to-end as a solo product—from the initial concept and game design to the full Unity implementation. That includes the core gameplay systems (timing windows, scoring, streaks, fail states, and difficulty ramp), the product experience (onboarding, HUD clarity, menu flow, and level selection), and the motion/visual language that makes every action feel snappy and satisfying.
+
+[GRID:heytaxi-1.gif,heytaxi-2.gif,heytaxi-3.gif,heytaxi-4.gif]
+
+A big part of the work is the content pipeline. I designed and implemented a system that detects the beat from the music and automatically generates beat cues and lane-line patterns, then built a level designer workflow on top of it so I can quickly shape pacing, adjust difficulty, and craft "signature moments" per song. This lets me iterate fast while keeping the game consistent and fair.
+
+[VIDEO:heytaxi-city.mp4]
+
+The planned release is 2026, with a full campaign of 15 levels set across world locations. Each level is designed as a "country stop" with its own rhythm identity and pattern vocabulary, so the game keeps introducing new ideas without losing the simplicity of the core loop. Right now, 5 levels are playable, and my next focus is finishing the main menu and the world/level select experience, then expanding content and doing a larger polish pass across feel, readability, performance, and bug fixing.
+
+[VIDEO:heytaxi-bottom.mp4]` },
+            ],
+            infoDisplay: {
+                titleEl: document.getElementById('cardTitle'),
+                descriptionEl: document.getElementById('cardDescription'),
+                innerEl: document.getElementById('cardInfoInner'),
+            }
+        });
+
+        // Wire up Grid/Stack toggle button
+        const gridBtn = document.getElementById('gridBtn');
+        gridBtn.addEventListener('click', () => {
+            const newMode = cardStack.toggleViewMode();
+            gridBtn.textContent = newMode === 'grid' ? 'Stack' : 'Grid';
+        });
+
+        // Wire up Back button for detail page
+        const backBtn = document.getElementById('backBtn');
+        backBtn.addEventListener('click', () => {
+            cardStack.collapseCard();
+        });
+
+        // Modal helper - adds open/close, overlay click, and pull-to-close
+        function setupModal(btn, modal, closeBtn) {
+            const overlay = modal.querySelector('.modal-overlay');
+            const card = modal.querySelector('.modal-card');
+            let touchStartY = 0;
+
+            btn.addEventListener('click', () => {
+                modal.classList.add('visible');
+            });
+
+            closeBtn.addEventListener('click', () => {
+                modal.classList.remove('visible');
+            });
+
+            // Click overlay to close
+            overlay.addEventListener('click', () => {
+                modal.classList.remove('visible');
+            });
+
+            // Pull down to close (mobile) - only when scrolled to top
+            card.addEventListener('touchstart', (e) => {
+                touchStartY = e.touches[0].clientY;
+            });
+
+            card.addEventListener('touchmove', (e) => {
+                const touchY = e.touches[0].clientY;
+                // Only close if at top of scroll and pulling down
+                if (card.scrollTop <= 0 && touchY - touchStartY > 80) {
+                    modal.classList.remove('visible');
+                }
+            });
+        }
+
+        // Wire up modals
+        setupModal(
+            document.getElementById('aboutBtn'),
+            document.getElementById('aboutModal'),
+            document.getElementById('aboutClose')
+        );
+
+        // Close modals with Escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                document.getElementById('aboutModal').classList.remove('visible');
+            }
+        });
+    </script>
+</body>
+</html>
