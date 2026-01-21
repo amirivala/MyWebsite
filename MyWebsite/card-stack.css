@@ -211,7 +211,7 @@ html, body {
 .card-info-title {
     font-family: 'NeueHaas', -apple-system, BlinkMacSystemFont, sans-serif;
     font-weight: 500;
-    font-size: clamp(24px, 4vw, 42px);
+    font-size: clamp(20px, 3.4vw, 36px);
     color: #000000;
     margin-bottom: 3px;
     letter-spacing: -0.02em;
@@ -220,7 +220,7 @@ html, body {
 .card-info-description {
     font-family: 'NeueHaas', -apple-system, BlinkMacSystemFont, sans-serif;
     font-weight: 400;
-    font-size: clamp(14px, 2vw, 18px);
+    font-size: clamp(12px, 1.7vw, 15px);
     color: rgba(0, 0, 0, 0.6);
     max-width: 400px;
     margin: 0 auto;
