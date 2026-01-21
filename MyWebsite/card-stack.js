@@ -112,6 +112,9 @@ class Card {
         this.pointerDownPos = { x: e.clientX, y: e.clientY };
         this.hasDragged = false;
 
+        // Store original z-index before any changes (for tap-to-front logic)
+        this.zIndexOnPointerDown = this.zIndex;
+
         // In grid mode, we only want click, not drag
         if (this.stack.viewMode === 'grid') {
             return;
@@ -171,13 +174,14 @@ class Card {
             this.isDragging = false;
             this.element.classList.remove('dragging');
 
-            // In stack view, only expand if this is the front card
+            // In stack view, only expand if this WAS the front card when tapped
             if (this.stack.viewMode === 'stack') {
-                const isTopCard = this.zIndex === this.stack.cards.length - 1;
-                if (!isTopCard) {
-                    // Bring to front instead of expanding
-                    this.stack.bringToFront(this);
-                    this.stack.updateInfoDisplay(this);
+                const wasTopCard = this.zIndexOnPointerDown === this.stack.cards.length - 1;
+                if (!wasTopCard) {
+                    // Card was already brought to front in onPointerDown
+                    // Reset targets so card animates to correct stack position
+                    this.targetX = 0;
+                    this.targetY = 0;
                     this.element.releasePointerCapture(e.pointerId);
                     return;
                 }
