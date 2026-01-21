@@ -29,12 +29,21 @@ html, body {
 .top-nav {
     position: fixed;
     top: 4%;
-    left: 50%;
-    transform: translateX(-50%);
+    left: 0;
+    right: 0;
     display: flex;
-    gap: 40px;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 4%;
     z-index: 1000;
     transition: opacity 0.3s ease;
+}
+
+.nav-name {
+    font-family: 'NeueHaas', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-weight: 500;
+    font-size: clamp(14px, 2vw, 18px);
+    color: #000000;
 }
 
 .nav-btn {
@@ -133,13 +142,20 @@ html, body {
 /* Card Info Text Display */
 .card-info {
     position: fixed;
-    bottom: 4%;
-    left: 50%;
-    transform: translateX(-50%);
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding-bottom: 4%;
+    padding-top: 100px;
     text-align: center;
     z-index: 1000;
     pointer-events: none;
     transition: opacity 0.3s ease;
+    background: linear-gradient(
+        to bottom,
+        rgba(255, 255, 255, 0) 0%,
+        rgba(255, 255, 255, 1) 100%
+    );
 }
 
 .card-info-inner {
@@ -365,7 +381,8 @@ html, body {
     margin-bottom: clamp(24px, 4vh, 40px);
 }
 
-.detail-image-grid img {
+.detail-image-grid img,
+.detail-image-grid video {
     width: 100%;
     height: auto;
     border-radius: 12px;

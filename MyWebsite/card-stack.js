@@ -849,12 +849,17 @@ class CardStack {
                 if (imgMatch) {
                     return `<img src="${imgMatch[1]}" alt="" class="detail-content-image">`;
                 }
-                // Check for grid marker [GRID:img1,img2,img3,img4]
+                // Check for grid marker [GRID:img1,img2,img3,img4] - supports both images and videos
                 const gridMatch = p.match(/^\[GRID:(.+)\]$/);
                 if (gridMatch) {
-                    const images = gridMatch[1].split(',').map(img => img.trim());
-                    const imagesHTML = images.map(img => `<img src="${img}" alt="">`).join('');
-                    return `<div class="detail-image-grid">${imagesHTML}</div>`;
+                    const files = gridMatch[1].split(',').map(f => f.trim());
+                    const mediaHTML = files.map(file => {
+                        if (file.endsWith('.mp4')) {
+                            return `<video src="${file}" autoplay muted loop playsinline></video>`;
+                        }
+                        return `<img src="${file}" alt="">`;
+                    }).join('');
+                    return `<div class="detail-image-grid">${mediaHTML}</div>`;
                 }
                 // Check for video marker [VIDEO:filename.mp4]
                 const videoMatch = p.match(/^\[VIDEO:(.+)\]$/);
