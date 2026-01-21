@@ -521,9 +521,32 @@ class CardStack {
         const { titleEl, descriptionEl, innerEl } = infoDisplay;
         if (!titleEl || !descriptionEl || !innerEl) return;
 
-        titleEl.textContent = card.data.title || '';
-        descriptionEl.textContent = card.data.description || '';
-        innerEl.classList.add('visible');
+        // Skip if same card
+        if (this.currentGridHoverIndex === card.index) return;
+
+        const previousIndex = this.currentGridHoverIndex;
+        this.currentGridHoverIndex = card.index;
+
+        // If already showing info for another card, fade out first
+        if (previousIndex !== undefined && !this.isGridTextAnimating) {
+            this.isGridTextAnimating = true;
+            innerEl.classList.remove('visible');
+
+            setTimeout(() => {
+                titleEl.textContent = card.data.title || '';
+                descriptionEl.textContent = card.data.description || '';
+                innerEl.classList.add('visible');
+
+                setTimeout(() => {
+                    this.isGridTextAnimating = false;
+                }, 250);
+            }, 250);
+        } else if (!this.isGridTextAnimating) {
+            // First hover, just show
+            titleEl.textContent = card.data.title || '';
+            descriptionEl.textContent = card.data.description || '';
+            innerEl.classList.add('visible');
+        }
     }
 
     hideGridHoverInfo() {
@@ -534,6 +557,7 @@ class CardStack {
         if (!innerEl) return;
 
         innerEl.classList.remove('visible');
+        this.currentGridHoverIndex = undefined;
     }
 
     createGridClones() {

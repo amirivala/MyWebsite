@@ -160,7 +160,13 @@ html, body {
 
 .card-info-inner {
     opacity: 0;
+    -webkit-transition: opacity 0.25s ease-out;
     transition: opacity 0.25s ease-out;
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    will-change: opacity;
 }
 
 .card-info-inner.visible {
