@@ -388,6 +388,10 @@ html, body {
     margin-bottom: clamp(24px, 4vh, 40px);
 }
 
+.detail-image-grid.three-col {
+    grid-template-columns: repeat(3, 1fr);
+}
+
 .detail-image-grid img,
 .detail-image-grid video {
     width: 100%;

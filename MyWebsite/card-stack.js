@@ -926,7 +926,8 @@ class CardStack {
                         }
                         return `<img src="${file}" alt="">`;
                     }).join('');
-                    return `<div class="detail-image-grid">${mediaHTML}</div>`;
+                    const gridClass = files.length === 3 ? 'detail-image-grid three-col' : 'detail-image-grid';
+                    return `<div class="${gridClass}">${mediaHTML}</div>`;
                 }
                 // Check for video marker [VIDEO:filename.mp4]
                 const videoMatch = p.match(/^\[VIDEO:(.+)\]$/);
