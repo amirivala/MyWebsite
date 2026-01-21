@@ -844,6 +844,43 @@ class CardStack {
             };
             detailPage.addEventListener('touchstart', this.touchStartListener);
             detailPage.addEventListener('touchmove', this.touchMoveListener);
+
+            // Edge swipe back gesture (iOS Safari-style)
+            this.edgeSwipeStartX = 0;
+            this.edgeSwipeStartY = 0;
+            this.isEdgeSwipe = false;
+
+            this.edgeSwipeStartListener = (e) => {
+                const touch = e.touches[0];
+                // Only trigger if touch starts within 30px of left edge
+                if (touch.clientX <= 30) {
+                    this.edgeSwipeStartX = touch.clientX;
+                    this.edgeSwipeStartY = touch.clientY;
+                    this.isEdgeSwipe = true;
+                }
+            };
+
+            this.edgeSwipeMoveListener = (e) => {
+                if (!this.isEdgeSwipe) return;
+
+                const touch = e.touches[0];
+                const deltaX = touch.clientX - this.edgeSwipeStartX;
+                const deltaY = Math.abs(touch.clientY - this.edgeSwipeStartY);
+
+                // Must be horizontal swipe (deltaX > deltaY * 2) and > 100px
+                if (deltaX > 100 && deltaX > deltaY * 2) {
+                    this.isEdgeSwipe = false;
+                    this.collapseCard();
+                }
+            };
+
+            this.edgeSwipeEndListener = () => {
+                this.isEdgeSwipe = false;
+            };
+
+            detailPage.addEventListener('touchstart', this.edgeSwipeStartListener);
+            detailPage.addEventListener('touchmove', this.edgeSwipeMoveListener);
+            detailPage.addEventListener('touchend', this.edgeSwipeEndListener);
         }
 
         // Hide nav and card-info
@@ -874,6 +911,10 @@ class CardStack {
             if (this.wheelListener) detailPage.removeEventListener('wheel', this.wheelListener);
             if (this.touchStartListener) detailPage.removeEventListener('touchstart', this.touchStartListener);
             if (this.touchMoveListener) detailPage.removeEventListener('touchmove', this.touchMoveListener);
+            // Clean up edge swipe listeners
+            if (this.edgeSwipeStartListener) detailPage.removeEventListener('touchstart', this.edgeSwipeStartListener);
+            if (this.edgeSwipeMoveListener) detailPage.removeEventListener('touchmove', this.edgeSwipeMoveListener);
+            if (this.edgeSwipeEndListener) detailPage.removeEventListener('touchend', this.edgeSwipeEndListener);
 
             detailPage.classList.remove('visible');
         }
