@@ -403,6 +403,22 @@ html, body {
     border-radius: 12px;
 }
 
+.appstore-badge {
+    display: inline-block;
+    margin-bottom: clamp(24px, 4vh, 40px);
+    transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.appstore-badge img {
+    height: 44px;
+    width: auto;
+}
+
+.appstore-badge:hover {
+    opacity: 0.8;
+    transform: scale(1.02);
+}
+
 /* Modal Styles - Bottom Sheet */
 .modal {
     position: fixed;

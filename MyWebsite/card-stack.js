@@ -933,6 +933,13 @@ class CardStack {
                 if (videoMatch) {
                     return `<video src="${videoMatch[1]}" autoplay muted loop playsinline class="detail-content-video"></video>`;
                 }
+                // Check for App Store link [APPSTORE:url]
+                const appstoreMatch = p.match(/^\[APPSTORE:(.+)\]$/);
+                if (appstoreMatch) {
+                    return `<a href="${appstoreMatch[1]}" target="_blank" rel="noopener" class="appstore-badge">
+                        <img src="https://tools.applemediaservices.com/api/badges/download-on-the-app-store/black/en-us?size=250x83" alt="Download on the App Store">
+                    </a>`;
+                }
                 return `<p class="detail-text">${p}</p>`;
             }).join('');
 
