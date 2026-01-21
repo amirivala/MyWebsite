@@ -170,6 +170,20 @@ class Card {
         if (!this.hasDragged && this.stack.viewMode !== 'expanded') {
             this.isDragging = false;
             this.element.classList.remove('dragging');
+
+            // In stack view, only expand if this is the front card
+            if (this.stack.viewMode === 'stack') {
+                const isTopCard = this.zIndex === this.stack.cards.length - 1;
+                if (!isTopCard) {
+                    // Bring to front instead of expanding
+                    this.stack.bringToFront(this);
+                    this.stack.updateInfoDisplay(this);
+                    this.element.releasePointerCapture(e.pointerId);
+                    return;
+                }
+            }
+
+            // Front card in stack view, or grid view - expand
             this.stack.expandCard(this);
             this.element.releasePointerCapture(e.pointerId);
             return;
