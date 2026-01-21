@@ -1008,6 +1008,7 @@ class CardStack {
             const video = document.createElement('video');
             video.className = 'card-video';
             video.src = cardData.video;
+            video.poster = 'posters/' + cardData.video.replace('.mp4', '.jpg');
             video.autoplay = true;
             video.muted = true;
             video.loop = true;
