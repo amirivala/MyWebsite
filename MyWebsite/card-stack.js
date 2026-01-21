@@ -409,9 +409,14 @@ class CardStack {
 
     updateSizes() {
         // Calculate scale factor based on viewport
-        const viewportMin = Math.min(window.innerWidth, window.innerHeight);
+        const vw = window.innerWidth;
+        const vh = window.innerHeight;
+        const isPortrait = vh > vw * 1.2; // Tall screen like phone in portrait
+
+        // On portrait/tall screens, use width with a boost; otherwise use min dimension
+        const viewportBase = isPortrait ? vw * 1.4 : Math.min(vw, vh);
         const baseViewport = 800; // Reference viewport size
-        this.scaleFactor = clamp(viewportMin / baseViewport, 0.4, 1.5);
+        this.scaleFactor = clamp(viewportBase / baseViewport, 0.4, 1.5);
 
         // Update CSS variables for card size
         const cardWidth = Math.round(this.options.baseCardWidth * this.scaleFactor);
