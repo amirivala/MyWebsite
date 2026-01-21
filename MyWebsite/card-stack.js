@@ -443,6 +443,29 @@ class CardStack {
         this.setupResizeListener();
         this.spawnAllCards();
         this.startAnimationLoop();
+
+        // Keyboard navigation for stack view
+        this.keyboardAnimationId = null;
+        this.handleKeyDown = (e) => {
+            // Only work in stack mode
+            if (this.viewMode !== 'stack') return;
+
+            // Don't interfere if any card is being dragged
+            if (this.cards.some(c => c.isDragging || c.isPointerDown)) return;
+
+            // Don't interfere if detail page is open
+            if (this.expandedCard) return;
+
+            if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+                e.preventDefault();
+                this.cycleToNextCard();
+            } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+                e.preventDefault();
+                this.cycleToPrevCard();
+            }
+        };
+
+        document.addEventListener('keydown', this.handleKeyDown);
     }
 
     updateSizes() {
@@ -1200,6 +1223,106 @@ class CardStack {
                 this.isTextAnimating = false;
             }, 250);
         }, 250);
+    }
+
+    cycleToNextCard() {
+        // Cancel any ongoing keyboard animation
+        if (this.keyboardAnimationId) {
+            cancelAnimationFrame(this.keyboardAnimationId);
+            this.keyboardAnimationId = null;
+        }
+
+        // Move top card to back of stack
+        const topCard = this.cards.find(c => c.zIndex === this.cards.length - 1);
+        if (!topCard) return;
+
+        // Immediately swap z-indices for responsiveness
+        this.cards.forEach(card => {
+            if (card !== topCard) {
+                card.setZIndex(card.zIndex + 1);
+            }
+        });
+        topCard.setZIndex(0);
+
+        // Get the new top card to animate in
+        const newTopCard = this.cards.find(c => c.zIndex === this.cards.length - 1);
+        if (newTopCard) {
+            this.updateInfoDisplay(newTopCard);
+
+            // Smoothly animate the new top card sliding in from the right
+            const startX = 350;
+            const targetX = 0;
+            const duration = 250; // ms
+            const startTime = performance.now();
+
+            newTopCard.x = startX;
+
+            const animateIn = (currentTime) => {
+                const elapsed = currentTime - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+
+                // Ease-out curve for smooth deceleration
+                const eased = 1 - Math.pow(1 - progress, 3);
+                newTopCard.x = startX + (targetX - startX) * eased;
+
+                if (progress < 1) {
+                    this.keyboardAnimationId = requestAnimationFrame(animateIn);
+                } else {
+                    this.keyboardAnimationId = null;
+                }
+            };
+
+            this.keyboardAnimationId = requestAnimationFrame(animateIn);
+        }
+    }
+
+    cycleToPrevCard() {
+        // Cancel any ongoing keyboard animation
+        if (this.keyboardAnimationId) {
+            cancelAnimationFrame(this.keyboardAnimationId);
+            this.keyboardAnimationId = null;
+        }
+
+        // Move bottom card to top of stack
+        const bottomCard = this.cards.find(c => c.zIndex === 0);
+        if (!bottomCard) return;
+
+        // Shift all cards down one z-index
+        this.cards.forEach(card => {
+            if (card !== bottomCard) {
+                card.setZIndex(card.zIndex - 1);
+            }
+        });
+        // Bring bottom card to top
+        bottomCard.setZIndex(this.cards.length - 1);
+
+        // Update info display
+        this.updateInfoDisplay(bottomCard);
+
+        // Smoothly animate the card sliding in from the left
+        const startX = -350;
+        const targetX = 0;
+        const duration = 250; // ms - same as cycleToNextCard
+        const startTime = performance.now();
+
+        bottomCard.x = startX;
+
+        const animateIn = (currentTime) => {
+            const elapsed = currentTime - startTime;
+            const progress = Math.min(elapsed / duration, 1);
+
+            // Ease-out curve for smooth deceleration
+            const eased = 1 - Math.pow(1 - progress, 3);
+            bottomCard.x = startX + (targetX - startX) * eased;
+
+            if (progress < 1) {
+                this.keyboardAnimationId = requestAnimationFrame(animateIn);
+            } else {
+                this.keyboardAnimationId = null;
+            }
+        };
+
+        this.keyboardAnimationId = requestAnimationFrame(animateIn);
     }
 
     startAnimationLoop() {
