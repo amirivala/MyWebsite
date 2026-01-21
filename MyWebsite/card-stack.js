@@ -120,10 +120,10 @@ class Card {
             return;
         }
 
-        this.isDragging = true;
-        this.element.classList.add('dragging');
+        // Don't set isDragging = true here - wait for actual movement
+        // This prevents updateDragging() from running on quick taps (iOS fix)
 
-        // Calculate offset from card center
+        // Prepare for potential drag (calculate offset in case user starts dragging)
         const rect = this.stack.container.getBoundingClientRect();
         const centerX = rect.left + rect.width / 2;
         const centerY = rect.top + rect.height / 2;
@@ -143,6 +143,13 @@ class Card {
         const dist = distance(this.pointerDownPos.x, this.pointerDownPos.y, e.clientX, e.clientY);
         if (dist > 10) {
             this.hasDragged = true;
+
+            // Start dragging on first movement past threshold (iOS fix)
+            if (!this.isDragging && this.stack.viewMode === 'stack') {
+                this.isDragging = true;
+                this.element.classList.add('dragging');
+            }
+
             // Dismiss first-time tip on drag
             const tip = document.getElementById('dragTip');
             if (tip && tip.classList.contains('visible')) {
@@ -179,9 +186,11 @@ class Card {
                 const wasTopCard = this.zIndexOnPointerDown === this.stack.cards.length - 1;
                 if (!wasTopCard) {
                     // Card was already brought to front in onPointerDown
-                    // Reset targets so card animates to correct stack position
+                    // Reset targets and velocity so card animates to correct stack position
                     this.targetX = 0;
                     this.targetY = 0;
+                    this.velocityX = 0;
+                    this.velocityY = 0;
                     this.element.releasePointerCapture(e.pointerId);
                     return;
                 }
