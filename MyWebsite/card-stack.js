@@ -474,14 +474,21 @@ class CardStack {
         const vh = window.innerHeight;
         const isPortrait = vh > vw * 1.2; // Tall screen like phone in portrait
 
+        // Detect iPad-like aspect ratio (covers iPad, iPad Air, iPad Pro)
+        const aspectRatio = Math.max(vw, vh) / Math.min(vw, vh);
+        this.isIpadAspectRatio = aspectRatio >= 1.25 && aspectRatio <= 1.5;
+
         // On portrait/tall screens, use width with a boost; otherwise use min dimension
         const viewportBase = isPortrait ? vw * 1.4 : Math.min(vw, vh);
         const baseViewport = 800; // Reference viewport size
         this.scaleFactor = clamp(viewportBase / baseViewport, 0.4, 1.5);
 
+        // Apply 10% reduction only for stack view on iPad aspect ratios
+        const ipadStackScale = (this.isIpadAspectRatio && this.viewMode === 'stack') ? 0.9 : 1.0;
+
         // Update CSS variables for card size
-        const cardWidth = Math.round(this.options.baseCardWidth * this.scaleFactor);
-        const cardHeight = Math.round(this.options.baseCardHeight * this.scaleFactor);
+        const cardWidth = Math.round(this.options.baseCardWidth * this.scaleFactor * ipadStackScale);
+        const cardHeight = Math.round(this.options.baseCardHeight * this.scaleFactor * ipadStackScale);
         this.container.style.setProperty('--card-width', `${cardWidth}px`);
         this.container.style.setProperty('--card-height', `${cardHeight}px`);
     }
@@ -572,6 +579,7 @@ class CardStack {
             }
             this.showInfoDisplay();
         }
+        this.updateSizes(); // Recalculate card size for iPad scaling
         return this.viewMode;
     }
 
